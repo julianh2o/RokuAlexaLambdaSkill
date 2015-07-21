@@ -1,0 +1,15 @@
+{
+  "name": "RokuControlServer",
+  "description": "A server for controlling your local Roku",
+  "version": "0.0.1",
+  "dependencies": {
+    "node-ssdp": "0.0.1"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git@github.com:julianh2o/RokuAlexaLambdaSkill.git"
+    }
+  ]
+}
+
