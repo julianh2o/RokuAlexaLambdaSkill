@@ -1,0 +1,34 @@
+{
+  "intents": [
+    {
+      "intent": "PlayLast",
+      "slots": []
+    },
+    {
+      "intent": "Type",
+      "slots": [
+          {
+              "name": "Text",
+              "type": "LITERAL"
+          }
+      ]
+    },
+	{
+      "intent": "PlayPause",
+      "slots": []
+    },
+	{
+      "intent": "SearchPlay",
+      "slots": [
+          {
+              "name": "Text",
+              "type": "LITERAL"
+          }
+      ]
+    },
+    {
+      "intent": "HelpIntent",
+      "slots": []
+    }
+  ]
+}
