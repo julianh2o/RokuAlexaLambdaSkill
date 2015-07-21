@@ -1,7 +1,7 @@
 RokuAlexaLambdaSkill
 ====================
 
-For detailed instructions, check out the blog post on http://www.reflowster.com
+For detailed instructions, check out the blog post on http://reflowster.com/news/2015/07/21/rokuvoicecontrol.html
 
 1. Start the Roku control server by running "npm install" and "node server.js" in the RokuControlServer folder
 2. Make this server accessible to the outside world using port forwarding on your router being sure to include the proper port (default: 12345)
