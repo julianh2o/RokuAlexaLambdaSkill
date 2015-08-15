@@ -3,7 +3,7 @@
   "description": "A server for controlling your local Roku",
   "version": "0.0.1",
   "dependencies": {
-    "node-ssdp": "0.0.1"
+    "node-ssdp": "2.5.1"
   },
   "repositories": [
     {
