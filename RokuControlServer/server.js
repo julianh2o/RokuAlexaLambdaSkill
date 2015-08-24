@@ -6,7 +6,7 @@ var dgram = require('dgram');
 
 //null will cause the server to discover the Roku on startup, hard coding a value will allow for faster startups
 var rokuAddress = null;
-const PORT=1234; 
+var PORT=1234; 
 
 var ssdp = new Client();
 
@@ -161,13 +161,45 @@ var handlers = {
 		post(rokuAddress+"keypress/Play");
 		response.end("OK");	
 	},
-    // for debugging information, unnecessary
-	"/testrequest":function(request,response) {
-		console.log("\n\n####### NEW REQUEST #########");
-		console.log(request.headers);
-		console.log(request.url);
-		console.log(request.body);
-		response.end('It Works!! Path Hit: ' + request.url);
+	"/roku/nextepisode":function(request,response) {
+		postSequence([
+			rokuAddress+"keypress/back",
+			1000,
+			rokuAddress+"keypress/down",
+			100,
+			rokuAddress+"keypress/down",
+			100,
+			rokuAddress+"keypress/select",
+			2000,
+			rokuAddress+"keypress/right",
+			100,
+			rokuAddress+"keypress/select",
+			1000,
+			rokuAddress+"keypress/Play",
+		],function() {
+
+		});
+		response.end("OK");
+	},
+	"/roku/lastepisode":function(request,response) {
+		postSequence([
+			rokuAddress+"keypress/back",
+			1000,
+			rokuAddress+"keypress/down",
+			100,
+			rokuAddress+"keypress/down",
+			100,
+			rokuAddress+"keypress/select",
+			2000,
+			rokuAddress+"keypress/left",
+			100,
+			rokuAddress+"keypress/select",
+			1000,
+			rokuAddress+"keypress/Play",
+		],function() {
+
+		});
+		response.end("OK");
 	}
 }
 

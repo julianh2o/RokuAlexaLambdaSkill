@@ -1,6 +1,6 @@
 var APP_ID = null; //replace this with your app ID to make use of APP_ID verification
 
-var AlexaSkill = require("./AlexaSkill";
+var AlexaSkill = require("./AlexaSkill");
 var serverinfo = require("./serverinfo");
 var http = require("http");
 
@@ -41,6 +41,21 @@ AlexaRoku.prototype.intentHandlers = {
 			response.tellWithCard("Playing the last Netflix show you searched");
 		});
     },
+	NextEpisode: function (intent, session, response) {
+		sendCommand("/roku/nextepisode",null,function() {
+			response.tellWithCard("Playing next episode");
+		});
+    },
+	LastEpisode: function (intent, session, response) {
+		sendCommand("/roku/lastepisode",null,function() {
+			response.tellWithCard("Playing previous episode");
+		});
+    },
+	ToggleTV: function (intent, session, response) {
+		sendCommand("/toggletv",null,function() {
+			response.tell("Affirmative");
+		});	
+	},
     Type: function (intent, session, response) {
 		sendCommand("/roku/type",intent.slots.Text.value,function() {
 			response.tellWithCard("Typing text: "+intent.slots.Text.value,"Roku","Typing text: "+intent.slots.Text.value);

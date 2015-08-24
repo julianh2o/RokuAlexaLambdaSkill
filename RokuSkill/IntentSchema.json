@@ -4,6 +4,18 @@
       "intent": "PlayLast",
       "slots": []
     },
+	{
+      "intent": "NextEpisode",
+      "slots": []
+    },
+	{
+      "intent": "LastEpisode",
+      "slots": []
+    },
+    {
+      "intent": "ToggleTV",
+      "slots": []
+    },
     {
       "intent": "Type",
       "slots": [
