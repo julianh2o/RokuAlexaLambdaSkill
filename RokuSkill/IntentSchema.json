@@ -1,14 +1,34 @@
 {
   "intents": [
     {
+      "intent": "Home",
+      "slots": []
+    },
+    {
+      "intent": "Pandora",
+      "slots": []
+    },
+    {
+      "intent": "Hulu",
+      "slots": []
+    },
+    {
+      "intent": "Amazon",
+      "slots": []
+    },
+    {
+      "intent": "Plex",
+      "slots": []
+    },
+    {
       "intent": "PlayLast",
       "slots": []
     },
-	{
+    {
       "intent": "NextEpisode",
       "slots": []
     },
-	{
+    {
       "intent": "LastEpisode",
       "slots": []
     },
@@ -25,11 +45,11 @@
           }
       ]
     },
-	{
+    {
       "intent": "PlayPause",
       "slots": []
     },
-	{
+    {
       "intent": "SearchPlay",
       "slots": [
           {

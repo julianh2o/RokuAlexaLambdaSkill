@@ -202,7 +202,48 @@ var handlers = {
 
 		});
 		response.end("OK");
-	}
+	},
+        "/roku/amazon":function(request,response) {
+        	postSequence([
+			amazon(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+        "/roku/plex":function(request,response) {
+        	postSequence([
+			plex(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+        "/roku/pandora":function(request,response) {
+        	postSequence([
+			pandora(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+        "/roku/hulu":function(request,response) {
+        	postSequence([
+			hulu(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+        "/roku/home":function(request,response) {
+        	postSequence([
+			home(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        }
+
 }
 
 //handles and incoming request by calling the appropriate handler based on the URL
@@ -213,6 +254,31 @@ function handleRequest(request, response){
 		console.log("Unknown request URL: ",request.url);
 		response.end();
 	}
+}
+
+
+// Launches the Amazon Video channel (id 13)
+function amazon(address){
+ return address+"launch/13";
+}
+// Launches the Pandora channel (id 28)
+function pandora(address){
+ return address+"launch/28";
+}
+
+// Launches the Hulu channel (id 2285)
+function hulu(address){
+ return address+"launch/2285";
+}
+
+// Launches the Plex channel (id 13535)
+function plex(address){
+ return address+"launch/13535";
+}
+
+// Sends the Home button
+function home(address){
+  return address+"keypress/home";
 }
 //start the MSEARCH background task to try every second (run it immediately too)
 setInterval(searchForRoku,1000);

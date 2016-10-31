@@ -1,3 +1,31 @@
+Hulu hulu
+Hulu set to hulu
+Hulu open hulu
+Hulu start hulu
+Hulu go to hulu
+
+Amazon amazon
+Amazon set to amazon
+Amazon open amazon
+Amazon start amazon
+Amazon go to amazon
+
+Plex plex
+Plex set to plex
+Plex open plex
+Plex start plex
+Plex go to plex
+
+Pandora pandora
+Pandora set to pandora
+Pandora open pandora
+Pandora start pandora
+Pandora go to pandora
+
+Home home
+Home go home
+Home go to home
+
 PlayLast play the last show
 PlayLast play last
 PlayLast play the last netflix show

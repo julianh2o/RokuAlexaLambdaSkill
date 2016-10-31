@@ -36,6 +36,31 @@ function sendCommand(path,body,callback) {
 }
 
 AlexaRoku.prototype.intentHandlers = {
+    Home: function (intent, session, response) {
+		sendCommand("/roku/home",null,function() {
+			response.tellWithCard("Going Home");
+		});
+    },
+    Amazon: function (intent, session, response) {
+		sendCommand("/roku/amazon",null,function() {
+			response.tellWithCard("Launching Amazon");
+		});
+    },
+    Pandora: function (intent, session, response) {
+		sendCommand("/roku/pandora",null,function() {
+			response.tellWithCard("Launching Pandora");
+		});
+    },
+    Hulu: function (intent, session, response) {
+		sendCommand("/roku/hulu",null,function() {
+			response.tellWithCard("Launching Hulu");
+		});
+    },
+    Plex: function (intent, session, response) {
+		sendCommand("/roku/plex",null,function() {
+			response.tellWithCard("Launching Plex");
+		});
+    },
     PlayLast: function (intent, session, response) {
 		sendCommand("/roku/playlast",null,function() {
 			response.tellWithCard("Playing the last Netflix show you searched");
