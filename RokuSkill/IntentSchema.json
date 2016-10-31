@@ -33,10 +33,6 @@
       "slots": []
     },
     {
-      "intent": "ToggleTV",
-      "slots": []
-    },
-    {
       "intent": "Type",
       "slots": [
           {

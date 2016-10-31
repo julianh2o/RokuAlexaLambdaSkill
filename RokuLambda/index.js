@@ -76,11 +76,6 @@ AlexaRoku.prototype.intentHandlers = {
 			response.tellWithCard("Playing previous episode");
 		});
     },
-	ToggleTV: function (intent, session, response) {
-		sendCommand("/toggletv",null,function() {
-			response.tell("Affirmative");
-		});	
-	},
     Type: function (intent, session, response) {
 		sendCommand("/roku/type",intent.slots.Text.value,function() {
 			response.tellWithCard("Typing text: "+intent.slots.Text.value,"Roku","Typing text: "+intent.slots.Text.value);

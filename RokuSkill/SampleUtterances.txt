@@ -41,15 +41,6 @@ LastEpisode last episode
 LastEpisode back
 LastEpisode prev episode
 
-ToggleTV toggle television
-ToggleTV toggle TV
-ToggleTV TV on
-ToggleTV TV off
-ToggleTV on screen
-ToggleTV off screen
-ToggleTV screen on
-ToggleTV screen off
-
 PlayPause play
 PlayPause pause
 PlayPause stop
