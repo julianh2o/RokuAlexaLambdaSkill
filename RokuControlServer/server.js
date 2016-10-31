@@ -5,6 +5,8 @@ var Client = require('node-ssdp').Client;
 var dgram = require('dgram'); 
 
 //null will cause the server to discover the Roku on startup, hard coding a value will allow for faster startups
+// When manually setting this, include the protocol, port, and trailing slash eg:
+// var rokuAddress = "http://192.168.1.100:8060/";
 var rokuAddress = null;
 var PORT=1234; 
 
