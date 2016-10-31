@@ -2,13 +2,13 @@ RokuAlexaLambdaSkill
 ====================
 ## Description
 
-This project provides an Alexa skill to control a local roku device with voice.  See the the blog post below for original content/commands
+This project provides an Alexa skill to control a local Roku device with voice commands using <a href="https://sdkdocs.roku.com/display/sdkdoc/External+Control+Guide">Roku External Controls</a>.  See the the blog post below for original content/commands
 
 Added commands:  Lauch Plex, Pandora, Hulu, Amazon Video, Home
 
 ## Provides
 
-  * nodejs server for local device
+  * nodejs server for controlling the local device
   * AWS Lambda code
   * Alexa Skill code
 
@@ -26,6 +26,11 @@ For detailed instructions, check out the blog post on http://reflowster.com/blog
 4. Configure a Alexa Skill using the contents of the RokuSkill folder, the ARN of your above Lambda Function, and the <a href="https://developer.amazon.com/edw/home.html">Alexa Skills Dashboard</a>.
 4. Zip the .js files in RokuLamba up and upload them as a new AWS Lambda Function using the <a href="https://console.aws.amazon.com/lambda">AWS Lambda Dashboard</a>
 
+## Contributors
+* jaknoll
+* kaptainkommie
+
+Please feel encouraged to submit pull requests!
 
 ## License
 
