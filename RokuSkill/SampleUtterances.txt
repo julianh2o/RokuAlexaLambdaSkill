@@ -10,6 +10,12 @@ Amazon open amazon
 Amazon start amazon
 Amazon go to amazon
 
+PlexTest plextest
+PlexTest set to plextest
+PlexTest open plextest
+PlexTest start plextest
+PlexTest go to plextest
+
 Plex plex
 Plex set to plex
 Plex open plex
@@ -25,6 +31,31 @@ Pandora go to pandora
 Home home
 Home go home
 Home go to home
+
+Right right
+Right go right
+Right go to right
+Right press right
+
+Forward forward
+Forward go to forward
+
+Left left
+Left go left
+Left go to left
+
+
+Up press up
+
+Down down
+Down go down
+
+Back back
+Back go back
+
+Select select
+Select go select
+Select press select
 
 PlayLast play the last show
 PlayLast play last
