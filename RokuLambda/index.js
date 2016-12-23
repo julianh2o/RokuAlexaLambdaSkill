@@ -41,6 +41,41 @@ AlexaRoku.prototype.intentHandlers = {
 			response.tellWithCard("Going Home");
 		});
     },
+    Right: function (intent, session, response) {
+		sendCommand("/roku/right",null,function() {
+			response.tellWithCard("Going Right");
+		});
+    },
+    Forward: function (intent, session, response) {
+		sendCommand("/roku/right",null,function() {
+			response.tellWithCard("Going Forward");
+		});
+    },
+    Left: function (intent, session, response) {
+		sendCommand("/roku/left",null,function() {
+			response.tellWithCard("Going Left");
+		});
+    },
+    Up: function (intent, session, response) {
+		sendCommand("/roku/up",null,function() {
+			response.tellWithCard("Going UP");
+		});
+    },
+    Down: function (intent, session, response) {
+		sendCommand("/roku/down",null,function() {
+			response.tellWithCard("Going Down");
+		});
+    },
+    Back: function (intent, session, response) {
+		sendCommand("/roku/back",null,function() {
+			response.tellWithCard("Going Back");
+		});
+    },
+    Select: function (intent, session, response) {
+		sendCommand("/roku/select",null,function() {
+			response.tellWithCard("Press Select");
+		});
+    },
     Amazon: function (intent, session, response) {
 		sendCommand("/roku/amazon",null,function() {
 			response.tellWithCard("Launching Amazon");
@@ -54,6 +89,11 @@ AlexaRoku.prototype.intentHandlers = {
     Hulu: function (intent, session, response) {
 		sendCommand("/roku/hulu",null,function() {
 			response.tellWithCard("Launching Hulu");
+		});
+    },
+    PlexTest: function (intent, session, response) {
+		sendCommand("/roku/plextest",null,function() {
+			response.tellWithCard("Launching Plextest");
 		});
     },
     Plex: function (intent, session, response) {

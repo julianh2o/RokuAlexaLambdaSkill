@@ -8,7 +8,7 @@ var dgram = require('dgram');
 // When manually setting this, include the protocol, port, and trailing slash eg:
 // var rokuAddress = "http://192.168.1.100:8060/";
 var rokuAddress = null;
-var PORT=1234; 
+var PORT=1234;
 
 var ssdp = new Client();
 
@@ -116,7 +116,7 @@ var handlers = {
 			postSequence(sequence,function() {
 
 			});
-			response.end("OK");	
+			response.end("OK");
 		});
 	},
     //Takes the POST data and uses it to search for a show and then immediate plays that show
@@ -161,7 +161,7 @@ var handlers = {
     //the play and pause buttons are the same and is called "Play"
 	"/roku/playpause":function(request,response) {
 		post(rokuAddress+"keypress/Play");
-		response.end("OK");	
+		response.end("OK");
 	},
 	"/roku/nextepisode":function(request,response) {
 		postSequence([
@@ -204,7 +204,7 @@ var handlers = {
 		response.end("OK");
 	},
         "/roku/amazon":function(request,response) {
-        	postSequence([
+			postSequence([
 			amazon(rokuAddress),
 		],function(){
 
@@ -212,15 +212,23 @@ var handlers = {
 		response.end("OK");
         },
         "/roku/plex":function(request,response) {
-        	postSequence([
+			postSequence([
 			plex(rokuAddress),
 		],function(){
 
 		});
 		response.end("OK");
         },
+		"/roku/plextest":function(request,response) {
+			postSequence([
+			plextest(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
         "/roku/pandora":function(request,response) {
-        	postSequence([
+            postSequence([
 			pandora(rokuAddress),
 		],function(){
 
@@ -228,7 +236,7 @@ var handlers = {
 		response.end("OK");
         },
         "/roku/hulu":function(request,response) {
-        	postSequence([
+			postSequence([
 			hulu(rokuAddress),
 		],function(){
 
@@ -236,14 +244,75 @@ var handlers = {
 		response.end("OK");
         },
         "/roku/home":function(request,response) {
-        	postSequence([
+			postSequence([
 			home(rokuAddress),
 		],function(){
 
 		});
 		response.end("OK");
-        }
+        },
+        "/roku/forward":function(request,response) {
+            postSequence([
+			forward(rokuAddress),
+		],function(){
 
+		});
+		response.end("OK");
+        },
+
+        "/roku/right":function(request,response) {
+            postSequence([
+			right(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+
+        "/roku/left":function(request,response) {
+            postSequence([
+			left(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+
+		"/roku/up":function(request,response) {
+            postSequence([
+			up(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+
+		"/roku/down":function(request,response) {
+            postSequence([
+			down(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+
+		"/roku/back":function(request,response) {
+            postSequence([
+            back(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
+
+        "/roku/select":function(request,response) {
+            postSequence([
+			select(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
 }
 
 //handles and incoming request by calling the appropriate handler based on the URL
@@ -265,7 +334,6 @@ function amazon(address){
 function pandora(address){
  return address+"launch/28";
 }
-
 // Launches the Hulu channel (id 2285)
 function hulu(address){
  return address+"launch/2285";
@@ -276,15 +344,57 @@ function plex(address){
  return address+"launch/13535";
 }
 
+// Launches the Plex channel (id 14987)
+function plextest(address){
+ return address+"launch/14987";
+}
+
 // Sends the Home button
 function home(address){
   return address+"keypress/home";
 }
+
+// Sends the Select/Enter button
+function select(address){
+  return address+"keypress/select";
+}
+
+// Sends the Right/Forward button
+function forward(address){
+  return address+"keypress/right";
+}
+
+// Sends the Right button
+function right(address){
+  return address+"keypress/right";
+}
+
+// Sends the Left button
+function left(address){
+  return address+"keypress/left";
+}
+
+// Sends the UP button
+function up(address){
+  return address+"keypress/up";
+}
+
+// Sends the Down buttton
+function down(address){
+  return address+"keypress/down";
+}
+
+// Sends the Back buttton
+function back(address){
+  return address+"keypress/back";
+}
+
+
 //start the MSEARCH background task to try every second (run it immediately too)
 setInterval(searchForRoku,1000);
 searchForRoku();
 
 //start the tcp server
 http.createServer(handleRequest).listen(PORT,function(){
-    console.log("Server listening on: http://localhost:%s", PORT);
+    console.log("Server listening on: http://192.168.113.128:%s", PORT);
 });

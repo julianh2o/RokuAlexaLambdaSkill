@@ -5,6 +5,34 @@
       "slots": []
     },
     {
+      "intent": "Right",
+      "slots": []
+    },
+    {
+      "intent": "Forward",
+      "slots": []
+    },
+    {
+      "intent": "Left",
+      "slots": []
+    },
+    {
+      "intent": "Up",
+      "slots": []
+    },
+    {
+      "intent": "Down",
+      "slots": []
+    },
+    {
+      "intent": "Back",
+      "slots": []
+    },
+    {
+      "intent": "Select",
+      "slots": []
+    },
+    {
       "intent": "Pandora",
       "slots": []
     },
@@ -14,6 +42,10 @@
     },
     {
       "intent": "Amazon",
+      "slots": []
+    },
+    {
+      "intent": "PlexTest",
       "slots": []
     },
     {
@@ -58,5 +90,5 @@
       "intent": "HelpIntent",
       "slots": []
     }
-  ]
+]
 }
