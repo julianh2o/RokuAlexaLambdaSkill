@@ -86,6 +86,11 @@ AlexaRoku.prototype.intentHandlers = {
 			response.tellWithCard("Launching Plex");
 		});
     },
+    Netflix: function (intent, session, response) {
+		sendCommand("/roku/netflix",null,function() {
+			response.tellWithCard("Launching Netflix");
+		});
+    },
     HBO: function (intent, session, response) {
 		sendCommand("/roku/hbo",null,function() {
 			response.tellWithCard("Launching HBO");
