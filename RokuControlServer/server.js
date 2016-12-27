@@ -7,10 +7,12 @@ var dgram = require('dgram');
 //null will cause the server to discover the Roku on startup, hard coding a value will allow for faster startups
 // When manually setting this, include the protocol, port, and trailing slash eg:
 // var rokuAddress = "http://192.168.1.100:8060/";
-var rokuAddress = null;
-var PORT=1234;
+var rokuAddress = null; 
+var PORT=1234; //this is the port you are enabling forwarding to. Reminder: you are port forwarding your public IP to the computer playing this script...NOT the roku IP
 
 var ssdp = new Client();
+
+var keyDelay = 100; //typing delay in ms. If you have a faster roku, you can probably reduce this, slower ones may have to increase it.
 
 //handle the ssdp response when the roku is found
 ssdp.on('response', function (headers, statusCode, rinfo) {
@@ -63,20 +65,20 @@ function postSequence(sequence,callback) {
 }
 
 //In order to send keyboard input to the roku, we use the keyress/Lit_* endpoint which can be any alphanumeric character
-//This function turns a string into a series of these commands with delays of 100ms built in
-//NOTE: this currently ignores anything that isn't lowercase alpha
+//This function turns a string into a series of these commands with delays built in
 function createTypeSequence(text) {
 	var sequence = [];
-	for (var i=0; i<text.length; i++) {
-		var c = text.charCodeAt(i);
-		if (c >= 97 && c <=122) { //alpha only
+	for (i=0; i<text.length; i++) {
+		var c = text.charCodeAt(i); 
+		if (c == 32) {
+			sequence.push(rokuAddress+"keypress/Lit_%20");
+        } else if (c >= 97 && c <=122) {
 			sequence.push(rokuAddress+"keypress/Lit_"+text.charAt(i));
-			sequence.push(100);
-		}
+        }
+		sequence.push(keyDelay);	
 	}
 	return sequence;
 }
-
 //simple helper function to pull the data out of a post request. This could be avoided by using a more capable library such
 function getRequestData(request,callback) {
 	var body = "";
@@ -88,11 +90,22 @@ function getRequestData(request,callback) {
 	});
 }
 
+function generateRepeatedKeyResponse(key,count) {
+    var arr = [];
+    for (var i=0; i<count; i++) {
+        arr.push(rokuAddress+key);
+        arr.push(keyDelay);
+    }
+    return function(request,response) {
+        postSequence(arr);
+        response.end("OK");
+    }
+}
+
 //depending on the URL endpoint accessed, we use a different handler.
 //This is almost certainly not the optimal way to build a TCP server, but for our simple example, it is more than sufficient
 var handlers = {
-    //This will play the last searched movie or show, we use it because it consistently resides to the right of the search box
-	"/roku/playlast":function(request,response) {
+    "/roku/playlast":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/home",    //wake the roku up, if its not already
 			rokuAddress+"keypress/home",    //go back to the home screen (even if we're in netflix, we need to reset the interface)
@@ -108,73 +121,235 @@ var handlers = {
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
+	"/roku/downtwo":generateRepeatedKeyResponse("keypress/down",2),
+	"/roku/downthree":generateRepeatedKeyResponse("keypress/down",3),
+	"/roku/downfour":generateRepeatedKeyResponse("keypress/down",4),
+	"/roku/downfive":generateRepeatedKeyResponse("keypress/down",5),
+
+	"/roku/uptwo":generateRepeatedKeyResponse("keypress/up",2),
+	"/roku/upthree":generateRepeatedKeyResponse("keypress/up",3),
+	"/roku/upfour":generateRepeatedKeyResponse("keypress/up",4),
+	"/roku/upfive":generateRepeatedKeyResponse("keypress/up",5),
+
+	"/roku/righttwo":generateRepeatedKeyResponse("keypress/right",2),
+	"/roku/righttwo":generateRepeatedKeyResponse("keypress/right",3),
+	"/roku/righttwo":generateRepeatedKeyResponse("keypress/right",4),
+	"/roku/righttwo":generateRepeatedKeyResponse("keypress/right",5),
+
+	"/roku/lefttwo":generateRepeatedKeyResponse("keypress/left",2),
+	"/roku/leftthree":generateRepeatedKeyResponse("keypress/left",3),
+	"/roku/leftfour":generateRepeatedKeyResponse("keypress/left",4),
+	"/roku/leftfive":generateRepeatedKeyResponse("keypress/left",5),
+	"/roku/captionson":function(request,response) {
+		postSequence([
+			rokuAddress+"keypress/info",    //this function only works with a Roku TV, as a regular roku's caption's sequence is based on the individual app.
+			keyDelay,
+			rokuAddress+"keypress/down",    
+			keyDelay,
+			rokuAddress+"keypress/down",   
+			keyDelay,
+			rokuAddress+"keypress/down",    
+			keyDelay,
+			rokuAddress+"keypress/down",    
+			keyDelay,                           
+			rokuAddress+"keypress/down",    
+			keyDelay,                           
+			rokuAddress+"keypress/right",    
+			keyDelay,
+			rokuAddress+"keypress/info",    //presses info a second time to exit menu
+			keyDelay,                           
+		]);
+		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
+	},
+	"/roku/captionsoff":function(request,response) {
+		postSequence([
+			rokuAddress+"keypress/info",    //this function only works with a Roku TV, as a regular roku's caption's sequence is based on the individual app.
+			keyDelay,
+			rokuAddress+"keypress/down",    
+			keyDelay,
+			rokuAddress+"keypress/down",   
+			keyDelay,
+			rokuAddress+"keypress/down",    
+			keyDelay,
+			rokuAddress+"keypress/down",    
+			keyDelay,                          
+			rokuAddress+"keypress/down",    
+			keyDelay,                           
+			rokuAddress+"keypress/left",    
+			keyDelay,          
+			rokuAddress+"keypress/info",    //presses info a second time to exit menu
+			keyDelay,                 
+		]);
+		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
+	},
     //This endpoint doenst perform any operations, but it allows an easy way for you to dictate typed text without having to use the on screen keyboard
 	"/roku/type":function(request,response) {
 		getRequestData(request,function(data) {
-			var text = data.replace(/^\s+|\s+$/g,'').toLowerCase(); //trim whitespace and lowercase
+			var text = data.replace().toLowerCase(); 
 			var sequence = createTypeSequence(text);
 			postSequence(sequence,function() {
 
 			});
-			response.end("OK");
+			response.end("OK");	
 		});
 	},
     //Takes the POST data and uses it to search for a show and then immediate plays that show
-	"/roku/searchplay":function(request,response) {
+	"/roku/searchroku":function(request,response) {
 		getRequestData(request,function(data) {
-			var text = data.replace(/^\s+|\s+$/g,'').toLowerCase(); //trim whitespace and lowercase
-			var sequence = [].concat([
+			var text = data.replace().toLowerCase();      //Master search....if a movie, will auto go to channel (first choice is always the free channel you have installed - if no free channel, will take you but not hit play.
+			var sequence = [].concat([			//If a TV show....will stop before selecting a channel (first choice is based on how many episodes avaialble, NOT based on cost - meaning manually choose - will also allow you to choose the specific season and episode manually using voice or remote)
 				rokuAddress+"keypress/home",    //wake roku
 				rokuAddress+"keypress/home",    //reset to home screen
-				3000,
-				rokuAddress+"launch/12",        //launch netflix app
-				7000,
-				rokuAddress+"keypress/down",    //navigate to search
-				1000,
-				rokuAddress+"keypress/Select",  //select search
 				2000,
-			],createTypeSequence(text),[        //enter the text
-				1000,
-				rokuAddress+"keypress/right",   //go to search selections (which show up to the right of they keyboard.. we need to tap through them)
-				100,
+				rokuAddress+"keypress/down",
+				keyDelay,
+				rokuAddress+"keypress/down",
+				keyDelay,
+				rokuAddress+"keypress/down",
+				keyDelay,
+				rokuAddress+"keypress/down",
+				keyDelay,
+				rokuAddress+"keypress/down",
+				keyDelay,
+				rokuAddress+"keypress/select",
+				500,
+				],createTypeSequence(text),[
 				rokuAddress+"keypress/right",
-				100,
+				keyDelay,
 				rokuAddress+"keypress/right",
-				100,
+				keyDelay,
 				rokuAddress+"keypress/right",
-				100,
+				keyDelay,
 				rokuAddress+"keypress/right",
-				100,
+				keyDelay,
+				rokuAddress+"keypress/right",
+				keyDelay,
 				rokuAddress+"keypress/right",
 				500,
-				rokuAddress+"keypress/Select", //selected the top result and returns to the main screen
-				3000,                          //wait for main menu
-				rokuAddress+"keypress/right",  //goto searched item
-				rokuAddress+"keypress/Select", //drill into show
-				3000,
-				rokuAddress+"keypress/Play",   //play when loaded
+				rokuAddress+"keypress/select",
+				1000,
+				rokuAddress+"keypress/select",
+				4000,
+				]);
+			postSequence(sequence);
+			response.end("OK");	 //respond with OK before the operation finishes
+		});
+	},
+	"/roku/searchplex":function(request,response) {
+		getRequestData(request,function(data) {
+			var text = data.replace().toLowerCase();      //Master search....if a movie, will auto go to channel (first choice is always the free channel you have installed - if no free channel, will take you but not hit play.
+			var sequence = [].concat([			//If a TV show....will stop before selecting a channel (first choice is based on how many episodes avaialble, NOT based on cost - meaning manually choose - will also allow you to choose the specific season and episode manually using voice or remote)
+				rokuAddress+"keypress/home",    //wake roku
+				rokuAddress+"keypress/home",    //reset to home screen
+				2000,			
+				rokuAddress+"launch/13535",    //open plex
+				5000,
+				rokuAddress+"keypress/up",
+				keyDelay,
+				rokuAddress+"keypress/select",
+				keyDelay,
+				],createTypeSequence(text),[
+				rokuAddress+"keypress/right",
+				keyDelay,
+				rokuAddress+"keypress/right",
+				keyDelay,
+				rokuAddress+"keypress/right",
+				keyDelay,
+				rokuAddress+"keypress/right",
+				keyDelay,
+				rokuAddress+"keypress/right",
+				1500,
+				rokuAddress+"keypress/right",
+				1000,
+				rokuAddress+"keypress/select",
+				500,
+				rokuAddress+"keypress/select",
+				500,
+				]);
+			postSequence(sequence);
+			response.end("OK");	 //respond with OK before the operation finishes
+		});
+	},
+	"/roku/playlastyoutube":function(request,response) {    //not working yet - youtube search does not allow keyboard input. Next best thing is to play most recent.
+		getRequestData(request,function(data) {
+			var sequence = [].concat([
+				rokuAddress+"keypress/home",    //wake roku
+				keyDelay,
+				rokuAddress+"launch/837",        //launch youtube app
+				6000,
+				rokuAddress+"keypress/up",    //navigate to search
+				200,
+				rokuAddress+"keypress/up",  //Navigate to search
+				200,
+				rokuAddress+"keypress/select",  //select search
+				200,
+				rokuAddress+"keypress/up",   //go to search selections (which show up to the right of they keyboard.. we need to tap through them)
+				200,
+				rokuAddress+"keypress/select",
+				2500,
+				rokuAddress+"keypress/select", //selected the top result and returns to the main screen
+				2500,                          //wait for main menu
 			]);
 			postSequence(sequence);
 			response.end("OK");	 //respond with OK before the operation finishes
 		});
 	},
-    //the play and pause buttons are the same and is called "Play"
-	"/roku/playpause":function(request,response) {
+	"/roku/playpause":function(request,response) {		//the play and pause buttons are the same and is called "Play"
 		post(rokuAddress+"keypress/Play");
-		response.end("OK");
+		response.end("OK");	
 	},
-	"/roku/nextepisode":function(request,response) {
+	"/roku/power":function(request,response) {		//Only for roku TV - can only turn TV OFF....not On, as once it is turned off, it will disable the network,
+		post(rokuAddress+"keypress/Power");
+		response.end("OK");	
+	},
+	"/roku/rewind":function(request,response) {		//rewind
+		post(rokuAddress+"keypress/rev");
+		response.end("OK");	
+	},
+	"/roku/fastforward":function(request,response) {	//fast forward
+		post(rokuAddress+"keypress/fwd");
+		response.end("OK");	
+	},
+	"/roku/up":function(request,response) {			//up
+		post(rokuAddress+"keypress/up");
+		response.end("OK");	
+	},
+	"/roku/down":function(request,response) {		//down
+		post(rokuAddress+"keypress/down");
+		response.end("OK");	
+	},
+	"/roku/back":function(request,response) {		//back
+		post(rokuAddress+"keypress/back");
+		response.end("OK");	
+	},
+	"/roku/left":function(request,response) {		//left
+		post(rokuAddress+"keypress/left");
+		response.end("OK");	
+	},
+	"/roku/instantreplay":function(request,response) {	//instant replay, go back 10 secounds
+		post(rokuAddress+"keypress/instantreplay");
+		response.end("OK");	
+	},
+	"/roku/right":function(request,response) {		//right
+		post(rokuAddress+"keypress/right");
+		response.end("OK");	
+	},
+	"/roku/select":function(request,response) {		//select - this is often more useful than play/pause - same as OK on the remote
+		post(rokuAddress+"keypress/select");
+		response.end("OK");	
+	},
+	"/roku/nextepisode":function(request,response) {	//NOT being utilized right now, needs tweaking
 		postSequence([
 			rokuAddress+"keypress/back",
 			1000,
 			rokuAddress+"keypress/down",
-			100,
+			keyDelay,
 			rokuAddress+"keypress/down",
-			100,
+			keyDelay,
 			rokuAddress+"keypress/select",
 			2000,
 			rokuAddress+"keypress/right",
-			100,
+			keyDelay,
 			rokuAddress+"keypress/select",
 			1000,
 			rokuAddress+"keypress/Play",
@@ -183,18 +358,18 @@ var handlers = {
 		});
 		response.end("OK");
 	},
-	"/roku/lastepisode":function(request,response) {
+	"/roku/lastepisode":function(request,response) {	//NOT being utilized right now, needs tweaking
 		postSequence([
 			rokuAddress+"keypress/back",
 			1000,
 			rokuAddress+"keypress/down",
-			100,
+			keyDelay,
 			rokuAddress+"keypress/down",
-			100,
+			keyDelay,
 			rokuAddress+"keypress/select",
 			2000,
 			rokuAddress+"keypress/left",
-			100,
+			keyDelay,
 			rokuAddress+"keypress/select",
 			1000,
 			rokuAddress+"keypress/Play",
@@ -203,116 +378,86 @@ var handlers = {
 		});
 		response.end("OK");
 	},
-        "/roku/amazon":function(request,response) {
-            postSequence([
-                amazon(rokuAddress),
-            ],function(){
+    "/roku/amazon":function(request,response) {			//function to open amazon, ID below
+        postSequence([
+            amazon(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
-        "/roku/plex":function(request,response) {
-            postSequence([
-                plex(rokuAddress),
-            ],function(){
+        });
+        response.end("OK");
+    },
+    "/roku/plex":function(request,response) {			//function to open plex, ID below
+        postSequence([
+            plex(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
-		"/roku/plextest":function(request,response) {
-            postSequence([
-                plextest(rokuAddress),
-            ],function(){
+        });
+        response.end("OK");
+    },
+    "/roku/pandora":function(request,response) {			//function to open pandora, ID below
+        postSequence([
+            pandora(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
-        "/roku/pandora":function(request,response) {
-            postSequence([
-                pandora(rokuAddress),
-            ],function(){
+        });
+        response.end("OK");
+    },
+    "/roku/hulu":function(request,response) {			//function to oen Hulu, ID below
+        postSequence([
+            hulu(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
-        "/roku/hulu":function(request,response) {
-            postSequence([
-                hulu(rokuAddress),
-            ],function(){
+        });
+        response.end("OK");
+    },
+    "/roku/home":function(request,response) {			//function for Home buddon, ID below
+        postSequence([
+            home(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
-        "/roku/home":function(request,response) {
-            postSequence([
-                home(rokuAddress),
-            ],function(){
+        });
+        response.end("OK");
+    },
+    "/roku/tv":function(request,response) {			//function for TV input - ROKU TV ONLY
+        postSequence([
+            tv(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
-        "/roku/forward":function(request,response) {
-            postSequence([
-                forward(rokuAddress),
-            ],function(){
+        });
+        response.end("OK");
+    },
+    "/roku/fourk":function(request,response) {		//Function for 4K Spotlight Channel - possibly 4k Roku version only
+        postSequence([
+            fourk(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
+        });
+        response.end("OK");
+    },
+    "/roku/hbo":function(request,response) {		//function for HBOGO, ID below
+        postSequence([
+            hbo(rokuAddress),
+        ],function(){
 
-        "/roku/right":function(request,response) {
-            postSequence([
-                right(rokuAddress),
-            ],function(){
+        });
+        response.end("OK");
+    },		
+    "/roku/youtube":function(request,response) {			//function for youtube, ID below
+        postSequence([
+            youtube(rokuAddress),
+        ],function(){
 
-            });
-            response.end("OK");
-        },
+        });
+        response.end("OK");
+    },
+    "/roku/fx":function(request,response) {			//function for FX Channel, ID below
+        postSequence([
+            fx(rokuAddress),
+        ],function(){
 
-        "/roku/left":function(request,response) {
-            postSequence([
-                left(rokuAddress),
-            ],function(){
-
-            });
-            response.end("OK");
-        },
-
-		"/roku/up":function(request,response) {
-            postSequence([
-                up(rokuAddress),
-            ],function(){
-
-            });
-            response.end("OK");
-        },
-
-		"/roku/down":function(request,response) {
-            postSequence([
-                down(rokuAddress),
-            ],function(){
-
-            });
-            response.end("OK");
-        },
-
-		"/roku/back":function(request,response) {
-            postSequence([
-                back(rokuAddress),
-            ],function(){
-
-            });
-            response.end("OK");
-        },
-
-        "/roku/select":function(request,response) {
-            postSequence([
-                select(rokuAddress),
-            ],function(){
-
-            });
-            response.end("OK");
-        },
+        });
+        response.end("OK");
+    }
 }
 
 //handles and incoming request by calling the appropriate handler based on the URL
@@ -334,6 +479,7 @@ function amazon(address){
 function pandora(address){
     return address+"launch/28";
 }
+
 // Launches the Hulu channel (id 2285)
 function hulu(address){
     return address+"launch/2285";
@@ -344,51 +490,35 @@ function plex(address){
     return address+"launch/13535";
 }
 
-// Launches the Plex channel (id 14987)
-function plextest(address){
-    return address+"launch/14987";
-}
-
 // Sends the Home button
 function home(address){
-    return address+"keypress/home";
+     return address+"keypress/home";
 }
 
-// Sends the Select/Enter button
-function select(address){
-    return address+"keypress/select";
+// Launches the TV channel (id tvinput.dtv)
+function tv(address){
+    return address+"launch/tvinput.dtv";
 }
 
-// Sends the Right/Forward button
-function forward(address){
-    return address+"keypress/right";
+// Launches the fourK channel (id 69091)
+function fourk(address){
+    return address+"launch/69091";
 }
 
-// Sends the Right button
-function right(address){
-    return address+"keypress/right";
+// Launches the HBO channel (id 8378)
+function hbo(address){
+    return address+"launch/8378";
 }
 
-// Sends the Left button
-function left(address){
-    return address+"keypress/left";
+// Launches the FX channel (id 47389)
+function fx(address){
+    return address+"launch/47389";
 }
 
-// Sends the UP button
-function up(address){
-    return address+"keypress/up";
+// Launches the YouTube channel (id 837)
+function youtube(address){
+    return address+"launch/837";
 }
-
-// Sends the Down buttton
-function down(address){
-    return address+"keypress/down";
-}
-
-// Sends the Back buttton
-function back(address){
-    return address+"keypress/back";
-}
-
 
 //start the MSEARCH background task to try every second (run it immediately too)
 setInterval(searchForRoku,1000);
@@ -396,5 +526,5 @@ searchForRoku();
 
 //start the tcp server
 http.createServer(handleRequest).listen(PORT,function(){
-    console.log("Server listening on port: %s", PORT);
+    console.log("Server listening on port %s", PORT);
 });

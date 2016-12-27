@@ -5,34 +5,6 @@
       "slots": []
     },
     {
-      "intent": "Right",
-      "slots": []
-    },
-    {
-      "intent": "Forward",
-      "slots": []
-    },
-    {
-      "intent": "Left",
-      "slots": []
-    },
-    {
-      "intent": "Up",
-      "slots": []
-    },
-    {
-      "intent": "Down",
-      "slots": []
-    },
-    {
-      "intent": "Back",
-      "slots": []
-    },
-    {
-      "intent": "Select",
-      "slots": []
-    },
-    {
       "intent": "Pandora",
       "slots": []
     },
@@ -45,23 +17,139 @@
       "slots": []
     },
     {
-      "intent": "PlexTest",
-      "slots": []
-    },
-    {
       "intent": "Plex",
       "slots": []
     },
     {
-      "intent": "PlayLast",
+      "intent": "HBO",
       "slots": []
     },
     {
-      "intent": "NextEpisode",
+      "intent": "TV",
       "slots": []
     },
     {
-      "intent": "LastEpisode",
+      "intent": "FX",
+      "slots": []
+    },
+    {
+      "intent": "FourK",
+      "slots": []
+    },
+    {
+      "intent": "Fastforward",
+      "slots": []
+    },
+    {
+      "intent": "Instantreplay",
+      "slots": []
+    },
+    {
+      "intent": "Captionson",
+      "slots": []
+    },
+    {
+      "intent": "Captionsoff",
+      "slots": []
+    },
+    {
+      "intent": "Rewind",
+      "slots": []
+    },
+    {
+      "intent": "Up",
+      "slots": []
+    },
+    {
+      "intent": "Uptwo",
+      "slots": []
+    },
+    {
+      "intent": "Upthree",
+      "slots": []
+    },
+    {
+      "intent": "Upfour",
+      "slots": []
+    },
+    {
+      "intent": "Upfive",
+      "slots": []
+    },
+    {
+      "intent": "Down",
+      "slots": []
+    },
+    {
+      "intent": "Downtwo",
+      "slots": []
+    },
+    {
+      "intent": "Downthree",
+      "slots": []
+    },
+    {
+      "intent": "Downfour",
+      "slots": []
+    },
+    {
+      "intent": "Downfive",
+      "slots": []
+    },
+    {
+      "intent": "Left",
+      "slots": []
+    },
+    {
+      "intent": "Lefttwo",
+      "slots": []
+    },
+    {
+      "intent": "Leftthree",
+      "slots": []
+    },
+    {
+      "intent": "Leftfour",
+      "slots": []
+    },
+    {
+      "intent": "Leftfive",
+      "slots": []
+    },
+    {
+      "intent": "Right",
+      "slots": []
+    },
+    {
+      "intent": "Righttwo",
+      "slots": []
+    },
+    {
+      "intent": "Rightthree",
+      "slots": []
+    },
+    {
+      "intent": "Rightfour",
+      "slots": []
+    },
+    {
+      "intent": "Rightfive",
+      "slots": []
+    },
+    {
+      "intent": "Back",
+      "slots": []
+    },
+        {
+      "intent": "Power",
+      "slots": []
+    },
+    {
+      "intent": "YouTube",
+      "slots": []
+    },
+    {
+      "intent": "Select",
       "slots": []
     },
     {
@@ -78,7 +166,34 @@
       "slots": []
     },
     {
-      "intent": "SearchPlay",
+      "intent": "SearchRoku",
+      "slots": [
+          {
+              "name": "Text",
+              "type": "LITERAL"
+          }
+      ]
+    },
+    {
+      "intent": "Search",
+      "slots": [
+          {
+              "name": "Text",
+              "type": "LITERAL"
+          }
+      ]
+    },
+    {
+      "intent": "Playlastyoutube",
+      "slots": [
+          {
+              "name": "Text",
+              "type": "LITERAL"
+          }
+      ]
+    },
+    {
+      "intent": "SearchPlex",
       "slots": [
           {
               "name": "Text",
@@ -90,5 +205,5 @@
       "intent": "HelpIntent",
       "slots": []
     }
-]
+  ]
 }

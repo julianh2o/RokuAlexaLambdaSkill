@@ -1,97 +1,165 @@
-Hulu hulu
-Hulu set to hulu
 Hulu open hulu
 Hulu start hulu
 Hulu go to hulu
 
-Amazon amazon
-Amazon set to amazon
 Amazon open amazon
 Amazon start amazon
 Amazon go to amazon
 
-PlexTest plextest
-PlexTest set to plextest
-PlexTest open plextest
-PlexTest start plextest
-PlexTest go to plextest
+YouTube open youtube
+YouTube start youtube
+YouTube go to youtube
 
-Plex plex
-Plex set to plex
 Plex open plex
 Plex start plex
 Plex go to plex
 
-Pandora pandora
-Pandora set to pandora
 Pandora open pandora
 Pandora start pandora
 Pandora go to pandora
+
+HBO open aitch bee o
+HBO start aitch bee o
+HBO go to aitch bee o
+
+TV open tv
+TV start tv
+TV go to tv
+
+FX open eff x
+FX start eff x
+FX go to eff x
+
+FourK open four k
+FourK start four k
+FourK go to four k
 
 Home home
 Home go home
 Home go to home
 
-Right right
-Right go right
-Right go to right
-Right press right
+Fastforward fast forward
+Fastforward skip ahead
+Fastforward move ahead
 
-Forward forward
-Forward go to forward
+Rewind rewind 
+Rewind move back
 
-Left left
-Left go left
-Left go to left
+Up go up
+Up move up
 
+Uptwo go up two
+Uptwo move up two
 
-Up press up
+Upthree go up three
+Upthree move up three
 
-Down down
+Upfour go up four
+Upfour move up four
+
+Upfive go up five
+Upfive move up five
+
 Down go down
+Down move down
 
-Back back
+Downtwo go down two
+Downtwo move down two
+
+Downthree go down three
+Downthree move down three
+
+Downfour go down four
+Downfour move down four
+
+Downfive go down five
+Downfive move down five
+
+Left go left
+Left move left
+
+Lefttwo go left two
+Lefttwo move left two
+
+Leftthree go left three
+Leftthree move left three
+
+Leftfour go left four
+Leftfour move left four
+
+Leftfive go leftfive
+Leftfive move leftfive
+
 Back go back
+Back move back
 
-Select select
-Select go select
-Select press select
+Right go right
+Right move right
 
-PlayLast play the last show
-PlayLast play last
-PlayLast play the last netflix show
-PlayLast play the next episode
-PlayLast play next
-PlayLast play netflix
+Righttwo go right two
+Righttwo move right two
 
-NextEpisode skip
-NextEpisode skip episode
-NextEpisode next episode
+Rightthree go right three
+Rightthree move right three
 
-LastEpisode last episode
-LastEpisode back
-LastEpisode prev episode
+Rightfour go right four
+Rightfour move right four
+
+Rightfive go right five
+Rightfive move right five
+
+Instantreplay skip back
+Instantreplay instant replay
 
 PlayPause play
 PlayPause pause
 PlayPause stop
-PlayPause start
-PlayPause freeze
-PlayPause go
+
+Select go
+Select enter
+Select select
+Select yes
+
+Power turn off
+Power goodbye
+
+Back go back
+Back back up
+Back return
+
+Captionson turn on captions
+
+Captionsoff turn off captions
 
 Type type {futurama|Text}
 Type type {How I met your mother|Text}
+Type type {harry potter|Text}
 
-SearchPlay search and play {futurama|Text}
-SearchPlay search and play {cosmos|Text}
-SearchPlay search and play {How I met your mother|Text}
-SearchPlay search and play {Knights of sidonia|Text}
-SearchPlay search and play {Gargantia|Text}
-SearchPlay play next {futurama|Text}
-SearchPlay play next {cosmos|Text}
-SearchPlay play next {How I met your mother|Text}
-SearchPlay play next {Knights of sidonia|Text}
-SearchPlay play next {Gargantia|Text}
+SearchRoku search and play {futurama|Text}
+SearchRoku search and play {cosmos|Text}
+SearchRoku search and play {How I met your mother|Text}
+SearchRoku search and play {Knights of sidonia|Text}
+SearchRoku search and play {Gargantia|Text}
+SearchRoku play next {futurama|Text}
+SearchRoku play next {cosmos|Text}
+SearchRoku play next {How I met your mother|Text}
+SearchRoku play next {Knights of sidonia|Text}
+SearchRoku play next {Gargantia|Text}
+SearchRoku play {frequently asked questions about time travel|Text}
+SearchRoku play {santa claus|Text}
+SearchRoku play {gilmore girls|Text}
+SearchRoku play {harry potter|Text}
+
+SearchPlex play {frequently asked questions about time travel|Text} on plex
+SearchPlex play {santa claus|Text} on plex
+SearchPlex play {gilmore girls|Text} on plex
+SearchPlex play {harry potter|Text} on plex
+
+Search search {santa claus|Text}
+Search type {harry potter|Text}
+
+Playlastyoutube play last video on youtube
+Playlastyoutube play the last video on youtube
 
 HelpIntent help
 HelpIntent help me

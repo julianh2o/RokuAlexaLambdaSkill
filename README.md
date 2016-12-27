@@ -30,6 +30,7 @@ For detailed instructions, check out the blog post on http://reflowster.com/blog
 * jaknoll
 * kaptainkommie
 * djobes
+* chris1642
 
 Please feel encouraged to submit pull requests!
 
