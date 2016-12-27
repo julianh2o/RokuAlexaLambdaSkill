@@ -29,6 +29,10 @@
       "slots": []
     },
     {
+      "intent": "Netflix",
+      "slots": []
+    },
+    {
       "intent": "FX",
       "slots": []
     },

@@ -30,6 +30,10 @@ FX open eff x
 FX start eff x
 FX go to eff x
 
+Netflix open netflix
+Netflix start netflix
+Netflix go to netflix
+
 FourK open four k
 FourK start four k
 FourK go to four k
