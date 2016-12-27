@@ -1,0 +1,153 @@
+Hulu open hulu
+Hulu start hulu
+Hulu go to hulu
+
+Amazon open amazon
+Amazon start amazon
+Amazon go to amazon
+
+YouTube open youtube
+YouTube start youtube
+YouTube go to youtube
+
+Plex open plex
+Plex start plex
+Plex go to plex
+
+Pandora open pandora
+Pandora start pandora
+Pandora go to pandora
+
+HBO open aitch bee o
+HBO start aitch bee o
+HBO go to aitch bee o
+
+TV open tv
+TV start tv
+TV go to tv
+
+FX open eff x
+FX start eff x
+FX go to eff x
+
+FourK open four k
+FourK start four k
+FourK go to four k
+
+Home home
+Home go home
+Home go to home
+
+Fastforward fast forward
+Fastforward skip ahead
+Fastforward move ahead
+
+Rewind rewind 
+Rewind move back
+
+Up go up
+Up move up
+
+Uptwo go up two
+Uptwo move up two
+
+Upthree go up three
+Upthree move up three
+
+Upfour go up four
+Upfour move up four
+
+Upfive go up five
+Upfive move up five
+
+Down go down
+Down move down
+
+Downtwo go down two
+Downtwo move down two
+
+Downthree go down three
+Downthree move down three
+
+Downfour go down four
+Downfour move down four
+
+Downfive go down five
+Downfive move down five
+
+Left go left
+Left move left
+
+Lefttwo go left two
+Lefttwo move left two
+
+Leftthree go left three
+Leftthree move left three
+
+Leftfour go left four
+Leftfour move left four
+
+Leftfive go leftfive
+Leftfive move leftfive
+
+Back go back
+Back move back
+
+Right go right
+Right move right
+
+Righttwo go right two
+Righttwo move right two
+
+Rightthree go right three
+Rightthree move right three
+
+Rightfour go right four
+Rightfour move right four
+
+Rightfive go right five
+Rightfive move right five
+
+Instantreplay skip back
+Instantreplay instant replay
+
+PlayPause play
+PlayPause pause
+PlayPause stop
+
+Select go
+Select enter
+Select select
+Select yes
+
+Power turn off
+Power fuck off
+Power goodbye
+
+Back go back
+Back back up
+Back return
+
+Captionson turn on captions
+
+Captionsoff turn off captions
+
+Type type {futurama|Text}
+Type type {How I met your mother|Text}
+Type type {harry potter|Text}
+
+SearchRoku play {frequently asked questions about time travel|Text}
+SearchRoku play {santa claus|Text}
+SearchRoku play {gilmore girls|Text}
+SearchRoku play {harry potter|Text}
+
+SearchPlex play {frequently asked questions about time travel|Text} on plex
+SearchPlex play {santa claus|Text} on plex
+SearchPlex play {gilmore girls|Text} on plex
+SearchPlex play {harry potter|Text} on plex
+
+Search search {santa claus|Text}
+Search type {harry potter|Text}
+
+Playlastyoutube play last video on youtube
+Playlastyoutube play the last video on youtube
