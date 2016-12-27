@@ -553,6 +553,14 @@ var handlers = {
 		});
 		response.end("OK");
         },
+        "/roku/netflix":function(request,response) {			//function to oen Netflix, ID below
+        	postSequence([
+			netflix(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },
         "/roku/home":function(request,response) {			//function for Home buddon, ID below
         	postSequence([
 			home(rokuAddress),
@@ -663,6 +671,10 @@ function youtube(address){
  return address+"launch/837";
 }
 
+// Launches the Netflix channel (id 12)
+function netflix(address){
+ return address+"launch/12";
+}
 
 //start the MSEARCH background task to try every second (run it immediately too)
 setInterval(searchForRoku,1000);
