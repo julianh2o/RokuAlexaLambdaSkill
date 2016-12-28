@@ -91,6 +91,23 @@ function getRequestData(request,callback) {
 //depending on the URL endpoint accessed, we use a different handler.
 //This is almost certainly not the optimal way to build a TCP server, but for our simple example, it is more than sufficient
 var handlers = {
+    //This will play the last searched movie or show, we use it because it consistently resides to the right of the search box
+	"/roku/playlast":function(request,response) { //NOT WORKING RIGHT NOW - NETFLIX CHANGED, NEEDS MODIFICATION TO APPLY TO ALL APPS
+		postSequence([
+			rokuAddress+"keypress/home",    //wake the roku up, if its not already
+			rokuAddress+"keypress/home",    //go back to the home screen (even if we're in netflix, we need to reset the interface)
+			3000,                           //loading the home screen takes a few seconds
+			rokuAddress+"launch/12",        //launch the netflix channel (presumably this is always id 12..)
+			7000,                           //loading netflix also takes some time
+			rokuAddress+"keypress/down",    //the last searched item is always one click down and one click to the right of where the cursor starts
+			rokuAddress+"keypress/right",
+			1000,                           //more delays, experimentally tweaked.. can probably be significantly reduced by more tweaking
+			rokuAddress+"keypress/Select",  //select the show from the main menu
+			3000,                           //give the show splash screen time to load up
+			rokuAddress+"keypress/Play"     //play the current/next episode (whichever one comes up by default)
+		]);
+		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
+	},
 	"/roku/downtwo":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/down",    //Down twice
@@ -151,177 +168,177 @@ var handlers = {
 	"/roku/upthree":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/up",    //up three times
-			100,
+			150,
 			rokuAddress+"keypress/up",   
-			100,      
+			150,      
 			rokuAddress+"keypress/up",    
-			100,                 
+			150,                 
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/upfour":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/up",    //up four times
-			100,
+			150,
 			rokuAddress+"keypress/up",   
-			100,    
+			150,    
 			rokuAddress+"keypress/up",   
-			100,
+			150,
 			rokuAddress+"keypress/up",    
-			100,                       //loading the home screen takes a few seconds
+			150,                       //loading the home screen takes a few seconds
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/upfive":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/up",    //up five times
-			100,
+			150,
 			rokuAddress+"keypress/up",    
-			100,                  
+			150,                  
 			rokuAddress+"keypress/up",    
-			100,
+			150,
 			rokuAddress+"keypress/up",   
-			100,
+			150,
 			rokuAddress+"keypress/up",   
-			100,        
+			150,        
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/righttwo":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/right",    //right two times
-			100,
+			150,
 			rokuAddress+"keypress/right",    
-			100,                          
+			150,                          
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/rightthree":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/right",    //right three times
-			100,
+			150,
 			rokuAddress+"keypress/right",    
-			100,      
+			150,      
 			rokuAddress+"keypress/right",  
-			100,                    
+			150,                    
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/rightfour":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/right",    //right four times
-			100,
+			150,
 			rokuAddress+"keypress/right",    
-			100,   
+			150,   
 			rokuAddress+"keypress/right",   
-			100,
+			150,
 			rokuAddress+"keypress/right",    
-			100,                       
+			150,                       
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/rightfive":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/right",    //right five times
-			100,
-			rokuAddress+"keypress/fight",    
-			100,
+			150,
 			rokuAddress+"keypress/right",    
-			100,
+			150,
 			rokuAddress+"keypress/right",    
-			100,
+			150,
+			rokuAddress+"keypress/right",    
+			150,
 			rokuAddress+"keypress/right",   
-			100,                 
+			150,                 
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/lefttwo":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/left",    //left twice
-			100,
+			150,
 			rokuAddress+"keypress/left",   
-			100,                           
+			150,                           
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/leftthree":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/left",    //left three times
-			100,
+			150,
 			rokuAddress+"keypress/left",    
-			100,
+			150,
 			rokuAddress+"keypress/left",   
-			100,                           
+			150,                           
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/leftfour":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/left",    //left four times
-			100,
+			150,
 			rokuAddress+"keypress/left",    
-			100,
+			150,
 			rokuAddress+"keypress/left",    
-			100,
+			150,
 			rokuAddress+"keypress/left",   
-			100,                          
+			150,                          
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/leftfive":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/left",    //left five times
-			100,
+			150,
 			rokuAddress+"keypress/left",    
-			100,
+			150,
 			rokuAddress+"keypress/left",    
-			100,
+			150,
 			rokuAddress+"keypress/left",    
-			100,
+			150,
 			rokuAddress+"keypress/left",    
-			100,                           
+			150,                           
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/captionson":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/info",    //this function only works with a Roku TV, as a regular roku's caption's sequence is based on the individual app.
-			100,
+			150,
 			rokuAddress+"keypress/down",    
-			100,
+			150,
 			rokuAddress+"keypress/down",   
-			100,
+			150,
 			rokuAddress+"keypress/down",    
-			100,
+			150,
 			rokuAddress+"keypress/down",    
-			100,                           
+			150,                           
 			rokuAddress+"keypress/down",    
-			100,                           
+			150,                           
 			rokuAddress+"keypress/right",    
-			100,
+			150,
 			rokuAddress+"keypress/info",    //presses info a second time to exit menu
-			100,                           
+			150,                           
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
 	"/roku/captionsoff":function(request,response) {
 		postSequence([
 			rokuAddress+"keypress/info",    //this function only works with a Roku TV, as a regular roku's caption's sequence is based on the individual app.
-			100,
+			150,
 			rokuAddress+"keypress/down",    
-			100,
+			150,
 			rokuAddress+"keypress/down",   
-			100,
+			150,
 			rokuAddress+"keypress/down",    
-			100,
+			150,
 			rokuAddress+"keypress/down",    
-			100,                          
+			150,                          
 			rokuAddress+"keypress/down",    
-			100,                           
+			150,                           
 			rokuAddress+"keypress/left",    
-			100,          
+			150,          
 			rokuAddress+"keypress/info",    //presses info a second time to exit menu
-			100,                 
+			150,                 
 		]);
 		response.end("OK"); //we provide an OK response before the operation finishes so that our AWS Lambda service doesn't wait around through our delays
 	},
@@ -336,6 +353,16 @@ var handlers = {
 			response.end("OK");	
 		});
 	},
+	"/roku/search":function(request,response) {
+		getRequestData(request,function(data) {
+			var text = data.replace().toLowerCase();
+			var sequence = [].concat([			
+				createTypeSequence(text),
+				]);
+			postSequence(sequence);
+			response.end("OK");	 //respond with OK before the operation finishes
+		});
+	},
     //Takes the POST data and uses it to search for a show and then immediate plays that show
 	"/roku/searchroku":function(request,response) {
 		getRequestData(request,function(data) {
@@ -343,34 +370,34 @@ var handlers = {
 			var sequence = [].concat([			//If a TV show....will stop before selecting a channel (first choice is based on how many episodes avaialble, NOT based on cost - meaning manually choose - will also allow you to choose the specific season and episode manually using voice or remote)
 				rokuAddress+"keypress/home",    //wake roku
 				rokuAddress+"keypress/home",    //reset to home screen
-				2000,
+				2200,
 				rokuAddress+"keypress/down",
-				100,
+				150,
 				rokuAddress+"keypress/down",
-				100,
+				150,
 				rokuAddress+"keypress/down",
-				100,
+				150,
 				rokuAddress+"keypress/down",
-				100,
+				150,
 				rokuAddress+"keypress/down",
-				100,
+				150,
 				rokuAddress+"keypress/select",
-				500,
+				800,
 				],createTypeSequence(text),[
 				rokuAddress+"keypress/right",
-				100,
+				150,
 				rokuAddress+"keypress/right",
-				100,
+				150,
 				rokuAddress+"keypress/right",
-				100,
+				150,
 				rokuAddress+"keypress/right",
-				100,
+				150,
 				rokuAddress+"keypress/right",
-				100,
+				150,
 				rokuAddress+"keypress/right",
 				500,
 				rokuAddress+"keypress/select",
-				1000,
+				1700,
 				rokuAddress+"keypress/select",
 				4000,
 				]);
@@ -386,28 +413,28 @@ var handlers = {
 				rokuAddress+"keypress/home",    //reset to home screen
 				2000,			
 				rokuAddress+"launch/13535",    //open plex
-				5000,
+				7250,
 				rokuAddress+"keypress/up",
-				100,
+				250,
 				rokuAddress+"keypress/select",
-				100,
+				250,
 				],createTypeSequence(text),[
 				rokuAddress+"keypress/right",
-				100,
+				250,
 				rokuAddress+"keypress/right",
-				100,
+				250,
 				rokuAddress+"keypress/right",
-				100,
+				250,
 				rokuAddress+"keypress/right",
-				100,
+				250,
 				rokuAddress+"keypress/right",
 				1500,
 				rokuAddress+"keypress/right",
-				1000,
+				1200,
 				rokuAddress+"keypress/select",
-				500,
+				750,
 				rokuAddress+"keypress/select",
-				500,
+				750,
 				]);
 			postSequence(sequence);
 			response.end("OK");	 //respond with OK before the operation finishes
@@ -417,21 +444,23 @@ var handlers = {
 		getRequestData(request,function(data) {
 			var sequence = [].concat([
 				rokuAddress+"keypress/home",    //wake roku
-				100,
+				500,
 				rokuAddress+"launch/837",        //launch youtube app
-				6000,
+				20000,
 				rokuAddress+"keypress/up",    //navigate to search
-				200,
+				400,
 				rokuAddress+"keypress/up",  //Navigate to search
-				200,
+				400,
 				rokuAddress+"keypress/select",  //select search
-				200,
+				800,
 				rokuAddress+"keypress/up",   //go to search selections (which show up to the right of they keyboard.. we need to tap through them)
-				200,
+				800,
 				rokuAddress+"keypress/select",
-				2500,
-				rokuAddress+"keypress/select", //selected the top result and returns to the main screen
-				2500,                          //wait for main menu
+				3200,
+				rokuAddress+"keypress/select", 
+				3200,                          //wait for main menu
+				rokuAddress+"keypress/select", 
+				3000,
 			]);
 			postSequence(sequence);
 			response.end("OK");	 //respond with OK before the operation finishes
@@ -521,7 +550,7 @@ var handlers = {
 		});
 		response.end("OK");
 	},
-        "/roku/amazon":function(request,response) {			//function to open amazon, ID below
+        "/roku/amazon":function(request,response) {			//function to open Amazon, ID below
         	postSequence([
 			amazon(rokuAddress),
 		],function(){
@@ -529,7 +558,7 @@ var handlers = {
 		});
 		response.end("OK");
         },
-        "/roku/plex":function(request,response) {			//function to open plex, ID below
+        "/roku/plex":function(request,response) {			//function to open Plex, ID below
         	postSequence([
 			plex(rokuAddress),
 		],function(){
@@ -537,7 +566,7 @@ var handlers = {
 		});
 		response.end("OK");
         },
-        "/roku/pandora":function(request,response) {			//function to open pandora, ID below
+        "/roku/pandora":function(request,response) {			//function to open Pandora, ID below
         	postSequence([
 			pandora(rokuAddress),
 		],function(){
@@ -553,15 +582,7 @@ var handlers = {
 		});
 		response.end("OK");
         },
-        "/roku/netflix":function(request,response) {			//function to oen Netflix, ID below
-        	postSequence([
-			netflix(rokuAddress),
-		],function(){
-
-		});
-		response.end("OK");
-        },
-        "/roku/home":function(request,response) {			//function for Home buddon, ID below
+        "/roku/home":function(request,response) {			//function for Home button, ID below
         	postSequence([
 			home(rokuAddress),
 		],function(){
@@ -593,9 +614,17 @@ var handlers = {
 		});
 		response.end("OK");
         },		
-        "/roku/youtube":function(request,response) {			//function for youtube, ID below
+        "/roku/youtube":function(request,response) {			//function for YouTube, ID below
         	postSequence([
 			youtube(rokuAddress),
+		],function(){
+
+		});
+		response.end("OK");
+        },		
+        "/roku/netflix":function(request,response) {			//function for Netflix, ID below
+        	postSequence([
+			netflix(rokuAddress),
 		],function(){
 
 		});
@@ -675,6 +704,7 @@ function youtube(address){
 function netflix(address){
  return address+"launch/12";
 }
+
 
 //start the MSEARCH background task to try every second (run it immediately too)
 setInterval(searchForRoku,1000);
