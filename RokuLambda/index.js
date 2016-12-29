@@ -21,6 +21,7 @@ function sendCommand(path,body,callback) {
         port:serverinfo.port,
         path: path,
         method: 'POST',
+        headers: {'Authorization': serverinfo.pass},
     };
 
     var req = http.request(opt, function(res) {

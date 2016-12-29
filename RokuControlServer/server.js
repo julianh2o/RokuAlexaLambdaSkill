@@ -9,6 +9,7 @@ var dgram = require('dgram');
 // var rokuAddress = "http://192.168.1.100:8060/";
 var rokuAddress = null; 
 var PORT=1234; //this is the port you are enabling forwarding to. Reminder: you are port forwarding your public IP to the computer playing this script...NOT the roku IP
+var PASS='password' //this is the password used in the AWS lambda files to help stop others from running commands on your roku, should they guess your IP and port
 
 var ssdp = new Client();
 
@@ -462,6 +463,11 @@ var handlers = {
 
 //handles and incoming request by calling the appropriate handler based on the URL
 function handleRequest(request, response){
+    if (request.headers.authorization !== PASS) {
+        console.log("Invalid authorization header");
+        response.end();
+        return;
+    }
     if (handlers[request.url]) {
         handlers[request.url](request,response);
     } else {
