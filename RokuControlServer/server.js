@@ -132,9 +132,9 @@ var handlers = {
     "/roku/upfive":generateRepeatedKeyResponse("keypress/up",5),
 
     "/roku/righttwo":generateRepeatedKeyResponse("keypress/right",2),
-    "/roku/righttwo":generateRepeatedKeyResponse("keypress/right",3),
-    "/roku/righttwo":generateRepeatedKeyResponse("keypress/right",4),
-    "/roku/righttwo":generateRepeatedKeyResponse("keypress/right",5),
+    "/roku/rightthree":generateRepeatedKeyResponse("keypress/right",3),
+    "/roku/rightfour":generateRepeatedKeyResponse("keypress/right",4),
+    "/roku/rightfive":generateRepeatedKeyResponse("keypress/right",5),
 
     "/roku/lefttwo":generateRepeatedKeyResponse("keypress/left",2),
     "/roku/leftthree":generateRepeatedKeyResponse("keypress/left",3),
