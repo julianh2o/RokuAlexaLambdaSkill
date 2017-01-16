@@ -5,36 +5,13 @@
       "slots": []
     },
     {
-      "intent": "Pandora",
-      "slots": []
-    },
-    {
-      "intent": "Hulu",
-      "slots": []
-    },
-    {
-      "intent": "Amazon",
-      "slots": []
-    },
-    {
-      "intent": "Plex",
-      "slots": []
-    },
-    {
-      "intent": "HBO",
-      "slots": []
-    },
-    {
-      "intent": "TV",
-      "slots": []
-    },
-    {
-      "intent": "FX",
-      "slots": []
-    },
-    {
-      "intent": "FourK",
-      "slots": []
+      "intent": "Launch",
+      "slots": [
+        {
+          "name": "Text",
+          "type": "LITERAL"
+        }
+      ]
     },
     {
       "intent": "Fastforward",
@@ -142,10 +119,6 @@
     },
         {
       "intent": "Power",
-      "slots": []
-    },
-    {
-      "intent": "YouTube",
       "slots": []
     },
     {

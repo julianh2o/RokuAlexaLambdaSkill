@@ -1,5 +1,3 @@
-var APP_ID = null; //replace this with your app ID to make use of APP_ID verification
-
 var AlexaSkill = require("./AlexaSkill");
 var serverinfo = require("./serverinfo");
 var http = require("http");
@@ -9,7 +7,7 @@ if (serverinfo.host == "127.0.0.1") {
 }
 
 var AlexaRoku = function () {
-    AlexaSkill.call(this, APP_ID);
+    AlexaSkill.call(this, serverinfo.appId);
 };
 
 AlexaRoku.prototype = Object.create(AlexaSkill.prototype);
@@ -42,19 +40,9 @@ AlexaRoku.prototype.intentHandlers = {
             response.tellWithCard("Going Home");
         });
     },
-    Amazon: function (intent, session, response) {
-        sendCommand("/roku/amazon",null,function() {
-            response.tellWithCard("Launching Amazon");
-        });
-    },
-    Pandora: function (intent, session, response) {
-        sendCommand("/roku/pandora",null,function() {
-            response.tellWithCard("Launching Pandora");
-        });
-    },
-    Hulu: function (intent, session, response) {
-        sendCommand("/roku/hulu",null,function() {
-            response.tellWithCard("Launching Hulu");
+    Launch: function (intent, session, response) {
+        sendCommand("/roku/launch",intent.slots.Text.value,function() {
+            response.tellWithCard("Launching "+ intent.slots.Text.value);
         });
     },
     Captionson: function (intent, session, response) {
@@ -81,34 +69,6 @@ AlexaRoku.prototype.intentHandlers = {
         sendCommand("/roku/tv",null,function() {
             response.tellWithCard("TV");
         });
-    },
-    Plex: function (intent, session, response) {
-        sendCommand("/roku/plex",null,function() {
-            response.tellWithCard("Launching Plex");
-        });
-    },
-    HBO: function (intent, session, response) {
-        sendCommand("/roku/hbo",null,function() {
-            response.tellWithCard("Launching HBO");
-        });
-    },
-    YouTube: function (intent, session, response) {
-        sendCommand("/roku/youtube",null,function() {
-            response.tellWithCard("Launching YouTube");
-        });
-    
-    },
-    FX: function (intent, session, response) {
-        sendCommand("/roku/fx",null,function() {
-            response.tellWithCard("Launching FX");
-        });
-    
-    },
-    FourK: function (intent, session, response) {
-        sendCommand("/roku/fourk",null,function() {
-            response.tellWithCard("Launching Four K");
-        });
-    
     },
     Rewind: function (intent, session, response) {
         sendCommand("/roku/rewind",null,function() {
