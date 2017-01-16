@@ -1,19 +1,18 @@
+var serverinfo = require("./serverinfo");
+var rokuChannel = require("./rokuchannels");
 var http = require('http');
 var fs = require('fs');
 var urllib = require("url");
 var Client = require('node-ssdp').Client;
-var dgram = require('dgram'); 
-
-//null will cause the server to discover the Roku on startup, hard coding a value will allow for faster startups
-// When manually setting this, include the protocol, port, and trailing slash eg:
-// var rokuAddress = "http://192.168.1.100:8060/";
-var rokuAddress = null; 
-var PORT=1234; //this is the port you are enabling forwarding to. Reminder: you are port forwarding your public IP to the computer playing this script...NOT the roku IP
-var PASS='password' //this is the password used in the AWS lambda files to help stop others from running commands on your roku, should they guess your IP and port
-
+var dgram = require('dgram');
 var ssdp = new Client();
 
 var keyDelay = 100; //typing delay in ms. If you have a faster roku, you can probably reduce this, slower ones may have to increase it.
+
+//null will cause the server to discover the Roku on startup, hard coding a value will allow for faster startups
+// When manually setting this, include the protocol, port, and trailing slash eg:
+// exports.rokuAddress = "http://192.168.1.100:8060/";
+var rokuAddress = null;
 
 //handle the ssdp response when the roku is found
 ssdp.on('response', function (headers, statusCode, rinfo) {
@@ -111,7 +110,7 @@ var handlers = {
             rokuAddress+"keypress/home",    //wake the roku up, if its not already
             rokuAddress+"keypress/home",    //go back to the home screen (even if we're in netflix, we need to reset the interface)
             3000,                           //loading the home screen takes a few seconds
-            rokuAddress+"launch/12",        //launch the netflix channel (presumably this is always id 12..)
+            rokuAddress+"launch/"+ rokuChannel['netflix'],        //launch the netflix channel (presumably this is always id 12..)
             7000,                           //loading netflix also takes some time
             rokuAddress+"keypress/down",    //the last searched item is always one click down and one click to the right of where the cursor starts
             rokuAddress+"keypress/right",
@@ -243,7 +242,7 @@ var handlers = {
                 rokuAddress+"keypress/home",    //wake roku
                 rokuAddress+"keypress/home",    //reset to home screen
                 2000,            
-                rokuAddress+"launch/13535",    //open plex
+                rokuAddress+"launch/"+rokuChannel['plex'],    //open plex
                 5000,
                 rokuAddress+"keypress/up",
                 keyDelay,
@@ -276,7 +275,7 @@ var handlers = {
             var sequence = [].concat([
                 rokuAddress+"keypress/home",    //wake roku
                 keyDelay,
-                rokuAddress+"launch/837",        //launch youtube app
+                rokuAddress+"launch/"+ rokuChannel['youtube'],        //launch youtube app
                 6000,
                 rokuAddress+"keypress/up",    //navigate to search
                 200,
@@ -379,91 +378,26 @@ var handlers = {
         });
         response.end("OK");
     },
-    "/roku/amazon":function(request,response) {            //function to open amazon, ID below
-        postSequence([
-            amazon(rokuAddress),
-        ],function(){
-
+    "/roku/launch":function(request,response) {  //function to open a roku channel from the channel list
+        getRequestData(request,function(data) {
+            var channelRequest = data.replace().toLowerCase();
+            console.log("Loading Channel: " + channelRequest);
+            if (rokuChannel[channelRequest]) {
+                postSequence([rokuAddress + "launch/" + rokuChannel[channelRequest]], function () {
+                });
+                response.end("OK");
+            } else {
+                console.log('Channel not found.');
+                response.end("Channel not found.");
+            }
         });
-        response.end("OK");
-    },
-    "/roku/plex":function(request,response) {            //function to open plex, ID below
-        postSequence([
-            plex(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },
-    "/roku/pandora":function(request,response) {            //function to open pandora, ID below
-        postSequence([
-            pandora(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },
-    "/roku/hulu":function(request,response) {            //function to oen Hulu, ID below
-        postSequence([
-            hulu(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },
-    "/roku/home":function(request,response) {            //function for Home buddon, ID below
-        postSequence([
-            home(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },
-    "/roku/tv":function(request,response) {            //function for TV input - ROKU TV ONLY
-        postSequence([
-            tv(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },
-    "/roku/fourk":function(request,response) {        //Function for 4K Spotlight Channel - possibly 4k Roku version only
-        postSequence([
-            fourk(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },
-    "/roku/hbo":function(request,response) {        //function for HBOGO, ID below
-        postSequence([
-            hbo(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },        
-    "/roku/youtube":function(request,response) {            //function for youtube, ID below
-        postSequence([
-            youtube(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
-    },
-    "/roku/fx":function(request,response) {            //function for FX Channel, ID below
-        postSequence([
-            fx(rokuAddress),
-        ],function(){
-
-        });
-        response.end("OK");
+        response.end("OK");     //respond with OK before the operation finishes
     }
 }
 
 //handles and incoming request by calling the appropriate handler based on the URL
 function handleRequest(request, response){
-    if (request.headers.authorization !== PASS) {
+    if (request.headers.authorization !== serverinfo.pass) {
         console.log("Invalid authorization header");
         response.end();
         return;
@@ -476,54 +410,9 @@ function handleRequest(request, response){
     }
 }
 
-
-// Launches the Amazon Video channel (id 13)
-function amazon(address){
-    return address+"launch/13";
-}
-// Launches the Pandora channel (id 28)
-function pandora(address){
-    return address+"launch/28";
-}
-
-// Launches the Hulu channel (id 2285)
-function hulu(address){
-    return address+"launch/2285";
-}
-
-// Launches the Plex channel (id 13535)
-function plex(address){
-    return address+"launch/13535";
-}
-
 // Sends the Home button
 function home(address){
      return address+"keypress/home";
-}
-
-// Launches the TV channel (id tvinput.dtv)
-function tv(address){
-    return address+"launch/tvinput.dtv";
-}
-
-// Launches the fourK channel (id 69091)
-function fourk(address){
-    return address+"launch/69091";
-}
-
-// Launches the HBO channel (id 8378)
-function hbo(address){
-    return address+"launch/8378";
-}
-
-// Launches the FX channel (id 47389)
-function fx(address){
-    return address+"launch/47389";
-}
-
-// Launches the YouTube channel (id 837)
-function youtube(address){
-    return address+"launch/837";
 }
 
 //start the MSEARCH background task to try every second (run it immediately too)
@@ -531,6 +420,6 @@ setInterval(searchForRoku,1000);
 searchForRoku();
 
 //start the tcp server
-http.createServer(handleRequest).listen(PORT,function(){
-    console.log("Server listening on port %s", PORT);
+http.createServer(handleRequest).listen(serverinfo.port,function(){
+    console.log("Server listening on port %s", serverinfo.port);
 });
