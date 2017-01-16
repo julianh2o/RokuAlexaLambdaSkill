@@ -1,4 +1,9 @@
 RokuLambda/serverinfo.js
+RokuControlServer/serverinfo.js
 node_modules
 .DS_Store
 .*.swp
+.idea/
+
+#Ignore any generated zip files in RokuLambda dir
+RokuLambda/*.zip

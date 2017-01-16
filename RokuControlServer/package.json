@@ -5,7 +5,7 @@
   "dependencies": {
     "node-ssdp": "2.5.1"
   },
-  "repositories": [
+  "repository": [
     {
       "type": "git",
       "url": "git@github.com:julianh2o/RokuAlexaLambdaSkill.git"

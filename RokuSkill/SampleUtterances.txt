@@ -1,38 +1,39 @@
-Hulu open hulu
-Hulu start hulu
-Hulu go to hulu
-
-Amazon open amazon
-Amazon start amazon
-Amazon go to amazon
-
-YouTube open youtube
-YouTube start youtube
-YouTube go to youtube
-
-Plex open plex
-Plex start plex
-Plex go to plex
-
-Pandora open pandora
-Pandora start pandora
-Pandora go to pandora
-
-HBO open aitch bee o
-HBO start aitch bee o
-HBO go to aitch bee o
-
-TV open tv
-TV start tv
-TV go to tv
-
-FX open eff x
-FX start eff x
-FX go to eff x
-
-FourK open four k
-FourK start four k
-FourK go to four k
+Launch launch {netflix|Text}
+Launch launch {plex|Text}
+Launch launch {fandango now|Text}
+Launch launch {netflix|Text} app
+Launch launch {plex|Text} app
+Launch launch {fandango now|Text} app
+Launch launch {netflix|Text} channel
+Launch launch {plex|Text} channel
+Launch launch {fandango now|Text} channel
+Launch start {netflix|Text}
+Launch start {plex|Text}
+Launch start {fandango now|Text}
+Launch start {netflix|Text} app
+Launch start {plex|Text} app
+Launch start {fandango now|Text} app
+Launch start {netflix|Text} channel
+Launch start {plex|Text} channel
+Launch start {fandango now|Text} channel
+Launch open {netflix|Text}
+Launch open {plex|Text}
+Launch open {fandango now|Text}
+Launch open {netflix|Text} app
+Launch open {plex|Text} app
+Launch open {fandango now|Text} app
+Launch open {netflix|Text} channel
+Launch open {plex|Text} channel
+Launch open {fandango now|Text} channel
+Launch goto {netflix|Text}
+Launch goto {plex|Text}
+Launch goto {fandango now|Text}
+Launch goto {netflix|Text} app
+Launch goto {plex|Text} app
+Launch goto {fandango now|Text} app
+Launch goto {netflix|Text} channel
+Launch goto {plex|Text} channel
+Launch goto {fandango now|Text} channel
 
 Home home
 Home go home
