@@ -25,6 +25,9 @@ function searchForRoku() {
     if (rokuAddress == null) {
         ssdp.search('roku:ecp');
     }
+    else {
+        clearInterval(rokuSearchInterval)
+    }
 }
 
 //a simple wrapper to post to a url with no payload (to send roku commands)
@@ -416,7 +419,7 @@ function home(address){
 }
 
 //start the MSEARCH background task to try every second (run it immediately too)
-setInterval(searchForRoku,1000);
+var rokuSearchInterval = setInterval(searchForRoku,1000);
 searchForRoku();
 
 //start the tcp server
