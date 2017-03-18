@@ -16,14 +16,19 @@ var rokuAddress = null;
 
 //handle the ssdp response when the roku is found
 ssdp.on('response', function (headers, statusCode, rinfo) {
-    rokuAddress = headers.LOCATION;
-    console.log("Found Roku: ",rokuAddress);
+    if ( headers.ST === 'roku:ecp' ) {
+        rokuAddress = headers.LOCATION;
+        console.log("Found Roku: ",rokuAddress);
+    }
 });
 
 //this is called periodically and will only look for the roku if we don't already have an address
 function searchForRoku() {
     if (rokuAddress == null) {
         ssdp.search('roku:ecp');
+    }
+    else {
+        clearInterval(rokuSearchInterval)
     }
 }
 
@@ -416,7 +421,7 @@ function home(address){
 }
 
 //start the MSEARCH background task to try every second (run it immediately too)
-setInterval(searchForRoku,1000);
+var rokuSearchInterval = setInterval(searchForRoku,1000);
 searchForRoku();
 
 //start the tcp server
