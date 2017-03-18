@@ -15,8 +15,8 @@ AlexaRoku.prototype.constructor = AlexaRoku;
 
 function sendCommand(path,body,callback) {
     var opt = {
-        host:serverinfo.host,
-        port:serverinfo.port,
+        host: serverinfo.host,
+        port: serverinfo.port,
         path: path,
         method: 'POST',
         headers: {'Authorization': serverinfo.pass},
@@ -230,19 +230,16 @@ AlexaRoku.prototype.intentHandlers = {
         });
     
     },
-    SearchRoku: function (intent, session, response) {
-        sendCommand("/roku/searchroku",intent.slots.Text.value,function() {
-            response.tellWithCard("Playing: "+intent.slots.Text.value,"Roku","Playing: "+intent.slots.Text.value);
-        });
-    },
     Search: function (intent, session, response) {
         sendCommand("/roku/search",intent.slots.Text.value,function() {
-            response.tellWithCard("Typing: "+intent.slots.Text.value,"Roku","Playing: "+intent.slots.Text.value);
+            response.tellWithCard("Searching: " + intent.slots.Text.value, "Roku", "Playing: " + intent.slots.Text.value);
         });
     },
-    SearchPlex: function (intent, session, response) {
-        sendCommand("/roku/searchplex",intent.slots.Text.value,function() {
-            response.tellWithCard("Playing: "+intent.slots.Text.value,"Roku","Playing: "+intent.slots.Text.value);
+    SearchChannel: function (intent, session, response) {
+        // join multiple slot values with arbitrary ampersand, which we will split in server code.
+        var slots = intent.slots.Text.value + "&" + intent.slots.Channel.value
+        sendCommand("/roku/searchChannel",slots,function() {
+            response.tellWithCard("Searching: " + intent.slots.Text.value + " on " + intent.slots.Channel.value, "Roku", "Playing: "+intent.slots.Text.value+" on "+ intent.slots.Channel.value);
         });
     },
     HelpIntent: function (intent, session, response) {

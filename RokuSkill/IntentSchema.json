@@ -139,15 +139,6 @@
       "slots": []
     },
     {
-      "intent": "SearchRoku",
-      "slots": [
-          {
-              "name": "Text",
-              "type": "LITERAL"
-          }
-      ]
-    },
-    {
       "intent": "Search",
       "slots": [
           {
@@ -157,16 +148,20 @@
       ]
     },
     {
-      "intent": "Playlastyoutube",
+      "intent": "SearchChannel",
       "slots": [
           {
               "name": "Text",
+              "type": "LITERAL"
+          },
+          {
+              "name": "Channel",
               "type": "LITERAL"
           }
       ]
     },
     {
-      "intent": "SearchPlex",
+      "intent": "Playlastyoutube",
       "slots": [
           {
               "name": "Text",
