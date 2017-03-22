@@ -343,6 +343,10 @@ var handlers = {
         post(rokuAddress+"keypress/select");
         response.end("OK");    
     },
+    "/roku/home":function(request,response) {
+        post(rokuAddress+"keypress/home");
+        response.end("OK");    
+    },
     "/roku/nextepisode":function(request,response) {    //NOT being utilized right now, needs tweaking
         postSequence([
             rokuAddress+"keypress/back",
