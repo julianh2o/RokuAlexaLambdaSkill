@@ -199,80 +199,29 @@ var handlers = {
         });
     },
     //Takes the POST data and uses it to search for a show and then immediate plays that show
-    "/roku/searchroku":function(request,response) {
+    "/roku/search":function(request,response) {
         getRequestData(request,function(data) {
-            var text = data.replace().toLowerCase();      //Master search....if a movie, will auto go to channel (first choice is always the free channel you have installed - if no free channel, will take you but not hit play.
-            var sequence = [].concat([            //If a TV show....will stop before selecting a channel (first choice is based on how many episodes avaialble, NOT based on cost - meaning manually choose - will also allow you to choose the specific season and episode manually using voice or remote)
-                rokuAddress+"keypress/home",    //wake roku
-                rokuAddress+"keypress/home",    //reset to home screen
-                2000,
-                rokuAddress+"keypress/down",
-                keyDelay,
-                rokuAddress+"keypress/down",
-                keyDelay,
-                rokuAddress+"keypress/down",
-                keyDelay,
-                rokuAddress+"keypress/down",
-                keyDelay,
-                rokuAddress+"keypress/down",
-                keyDelay,
-                rokuAddress+"keypress/select",
-                500,
-                ],createTypeSequence(text),[
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                500,
-                rokuAddress+"keypress/select",
-                1000,
-                rokuAddress+"keypress/select",
-                4000,
-                ]);
-            postSequence(sequence);
-            response.end("OK");     //respond with OK before the operation finishes
+          var text = data.replace().toLowerCase();
+          postSequence([
+              searchAllChannels(rokuAddress, text),
+          ],function(){
+
+          });
+          response.end("OK");
         });
     },
-    "/roku/searchplex":function(request,response) {
+    //Takes the POST data and uses it to search for a show on a specific channel
+    "/roku/searchChannel":function(request,response) {
         getRequestData(request,function(data) {
-            var text = data.replace().toLowerCase();      //Master search....if a movie, will auto go to channel (first choice is always the free channel you have installed - if no free channel, will take you but not hit play.
-            var sequence = [].concat([            //If a TV show....will stop before selecting a channel (first choice is based on how many episodes avaialble, NOT based on cost - meaning manually choose - will also allow you to choose the specific season and episode manually using voice or remote)
-                rokuAddress+"keypress/home",    //wake roku
-                rokuAddress+"keypress/home",    //reset to home screen
-                2000,            
-                rokuAddress+"launch/"+rokuChannel['plex'],    //open plex
-                5000,
-                rokuAddress+"keypress/up",
-                keyDelay,
-                rokuAddress+"keypress/select",
-                keyDelay,
-                ],createTypeSequence(text),[
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                keyDelay,
-                rokuAddress+"keypress/right",
-                1500,
-                rokuAddress+"keypress/right",
-                1000,
-                rokuAddress+"keypress/select",
-                500,
-                rokuAddress+"keypress/select",
-                500,
-                ]);
-            postSequence(sequence);
-            response.end("OK");     //respond with OK before the operation finishes
+          var slotArray = data.split('&');
+          var text = slotArray[0].replace().toLowerCase();
+          var channel = slotArray[1].replace().toLowerCase();
+          postSequence([
+              searchChannel(rokuAddress, text, rokuChannel[channel]),
+          ],function(){
+
+          });
+          response.end("OK");
         });
     },
     "/roku/playlastyoutube":function(request,response) {    //not working yet - youtube search does not allow keyboard input. Next best thing is to play most recent.
@@ -422,6 +371,36 @@ function handleRequest(request, response){
 // Sends the Home button
 function home(address){
      return address+"keypress/home";
+}
+
+// Get all channel ids available in rokuchannels.js
+// users can set priority by reordering channels in the rokuchannels file
+function getAllChannelIds() {
+    // get all channels into an array
+    var channels = Object.keys(rokuChannel).map(function (key) {
+        return rokuChannel[key];
+    });
+    // filter duplicates
+    var uniqueChannels = channels.filter(function(item, pos, self) {
+        return self.indexOf(item) == pos;
+    })
+    // remove `tvinput.dtv`
+    tvinputIndex = uniqueChannels.indexOf('tvinput.dtv')
+    if (tvinputIndex > -1) uniqueChannels.splice(tvinputIndex, 1)
+    // join with percent-encoded comma for URL
+    return uniqueChannels.join('%2c')
+}
+
+var ALL_CHANNEL_IDS = getAllChannelIds()
+
+// Searches Roku, all channels, will launch on first match in rokuChannels object
+function searchAllChannels(address, title) {
+  return address+"/search/browse?title=" + title + "&provider-id=" + ALL_CHANNEL_IDS + "&launch=true&match-any=true";
+}
+
+// Searches Roku, on certain channel, will launch.
+function searchChannel(address, title, channelID) {
+  return address+"/search/browse?title=" + title + "&provider-id=" + channelID + "&launch=true&match-any=true";
 }
 
 //start the MSEARCH background task to try every second (run it immediately too)

@@ -136,28 +136,21 @@ Type type {futurama|Text}
 Type type {How I met your mother|Text}
 Type type {harry potter|Text}
 
-SearchRoku search and play {futurama|Text}
-SearchRoku search and play {cosmos|Text}
-SearchRoku search and play {How I met your mother|Text}
-SearchRoku search and play {Knights of sidonia|Text}
-SearchRoku search and play {Gargantia|Text}
-SearchRoku play next {futurama|Text}
-SearchRoku play next {cosmos|Text}
-SearchRoku play next {How I met your mother|Text}
-SearchRoku play next {Knights of sidonia|Text}
-SearchRoku play next {Gargantia|Text}
-SearchRoku play {frequently asked questions about time travel|Text}
-SearchRoku play {santa claus|Text}
-SearchRoku play {gilmore girls|Text}
-SearchRoku play {harry potter|Text}
+Search search for {breaking bad|Text}
+Search search for {rick and morty|Text}
+Search search for {ip man|Text} on all channels
+Search play {futurama|Text}
+Search play {harry potter|Text}
+Search play {breaking bad|Text}
 
-SearchPlex play {frequently asked questions about time travel|Text} on plex
-SearchPlex play {santa claus|Text} on plex
-SearchPlex play {gilmore girls|Text} on plex
-SearchPlex play {harry potter|Text} on plex
-
-Search search {santa claus|Text}
-Search type {harry potter|Text}
+SearchChannel search {netflix|Channel} for {breaking bad|Text}
+SearchChannel search {amazon|Channel} for {rick and morty|Text}
+SearchChannel search {plex|Channel} for {harry potter|Text}
+SearchChannel search for {breaking bad|Text} on {netflix|Channel}
+SearchChannel search for {rick and morty|Text} on {amazon|Channel}
+SearchChannel search for {harry potter|Text} on {plex|Channel}
+SearchChannel play {futurama|Text} on {netflix|Channel}
+SearchChannel play {harry potter|Text} on {plex|Channel}
 
 Playlastyoutube play last video on youtube
 Playlastyoutube play the last video on youtube
