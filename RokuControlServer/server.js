@@ -96,12 +96,12 @@ function getRequestData(request,callback) {
 }
 
 function generateRepeatedKeyResponse(key,count) {
-    var arr = [];
-    for (var i=0; i<count; i++) {
-        arr.push(rokuAddress+key);
-        arr.push(keyDelay);
-    }
     return function(request,response) {
+        var arr = [];
+        for (var i=0; i<count; i++) {
+            arr.push(rokuAddress+key);
+            arr.push(keyDelay);
+        }
         postSequence(arr);
         response.end("OK");
     }
